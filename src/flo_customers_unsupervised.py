@@ -5,7 +5,7 @@
 #### PROJECT DEFINITION
 # FLO wants to segment customers in order to define new marketing strategies.
 # The consumption behaviours of individuals are defined and clusters / customer groups are formed by unsupervised machine learning techniques
-
+# RFM Analysis is used for feature engineering
 
 #The dataset includes Flo's last purchases from OmniChannel (both online and offline shoppers) in 2020 - 2021.
 #It consists of information obtained from the past shopping behaviors of customers
@@ -65,9 +65,7 @@ df_ = pd.read_csv("data/raw/flo_data_20k.csv")
 df = df_.copy()
 df.head(5)
 
-#Adım 2: Müşterileri segmentlerken kullanacağınız değişkenleri seçiniz.
-#Not: Tenure (Müşterinin yaşı), Recency (en son kaç gün önce alışveriş yaptığı)
-# gibi yeni değişkenler oluşturabilirsiniz
+#Step 2: Feature Engineering using RFM Analysis
 
 df["customer_value_total_ever_omnichannel"] = df["customer_value_total_ever_offline"] + df["customer_value_total_ever_online"]
 
@@ -89,7 +87,7 @@ rfm = df.groupby("master_id").agg({"last_order_date": lambda last_order_date: (t
                                    "order_num_total_ever_omnichannel": lambda frequency: frequency.sum(),
                                    "customer_value_total_ever_omnichannel": lambda total: total.sum()})
 
-#başka yöntemler -- rfm["recency"] = (today_date - df["last_order_date"]).astype("timedelta64[0])
+#other methods -- rfm["recency"] = (today_date - df["last_order_date"]).astype("timedelta64[0])
 rfm.columns = ["recency", "frequency", "monetary"]
 #rfm["recency"] = (today_date - rfm["last_order_date"])
 
@@ -113,13 +111,13 @@ df.head()
 # K-Means Clustering
 ################################
 
-#Adım 1: Degiskenleri standartlastiriniz
+#Step 3: Standardization
 s = StandardScaler()
 X_scaled = s.fit_transform(df[num_cols])
 df[num_cols] =pd.DataFrame(X_scaled, columns=df[num_cols].columns)
 df.head()
 
-#Adım 2: Optimum küme sayısını belirleyiniz.
+#Step 4: Finding the optimum number of clusters
 kmeans = KMeans()
 ssd = []
 K = range(1,30)
@@ -144,7 +142,7 @@ elbow.show()
 #the optimum K
 elbow.elbow_value_
 
-#Adım 3: Modelinizi oluşturunuz ve müşterilerinizi segmentleyiniz.
+#Step 5: Machine Learning Model
 # Final Clusters
 
 kmeans = KMeans(n_clusters=elbow.elbow_value_).fit(df)
@@ -158,12 +156,12 @@ df.head()
 
 final_df["kmeans_clusters"] = cluster_kmeans + 1
 
-#Adım 3: Her bir segmenti istatistiksel olarak inceleyeniz
-# Statistical Analysis
+
+# Step 6: Statistical Analysis
 final_df.groupby("kmeans_clusters").describe()
 
 ################################
-# Görev 3: Hierarchical Clustering ile Müşteri Segmentasyonu
+# Hierarchical Clustering
 ################################
 hc_average = linkage(df, "average")
 
@@ -173,8 +171,8 @@ hc_average = linkage(df, "average")
 # more comprehensive plot??
 # plt.figure(figsize=(10,5))
 # plt.title("Hierarchical Dendogram")
-# plt.xlabel("Gözlem birimleri")
-# plt.ylabel("Uzakliklar")
+# plt.xlabel("Observations")
+# plt.ylabel("Distances")
 # dendrogram(hc_average, leaf_font_size=10)
 # plt.show()
 
@@ -202,5 +200,3 @@ final_df.head()
 final_df["hi_clusters"] = clusters + 1
 
 final_df.groupby("hi_clusters").describe()
-
-#kendime not: mentor session izle, bu clusterlari düzenle

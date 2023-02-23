@@ -1,4 +1,14 @@
-### Flo Customer Segmentation with RFM Analysis ###
+################################
+# Flo Customer Segmentation with RFM Analysis
+################################
+
+#### PROJECT DEFINITION
+# FLO wants to segment customers in order to define new marketing strategies.
+# The consumption behaviours of individuals are defined and clusters / customer groups are formed by RFM (Recency, Frequency, Monetary) Analysis
+
+#The dataset includes Flo's last purchases from OmniChannel (both online and offline shoppers) in 2020 - 2021.
+#It consists of information obtained from the past shopping behaviors of customers
+
 
 # Features
 #
@@ -17,7 +27,7 @@
 
 
 ################################
-# Import Libraries
+# Import Libraries & Helper
 ################################
 #packages
 import pandas as pd
@@ -37,7 +47,7 @@ pd.set_option("display.max_rows", None)
 pd.set_option("display.float_format", lambda x: "%.3f" % x)
 
 ################################
-# EDA
+# Exploratory Data Analysis
 ################################
 
 #### STEP 1: Data Preparation & Exploratory Data Analysis ####
@@ -48,7 +58,7 @@ df = df_.copy()
 #observations
 helper.check_df(df)
 
-
+#unique count of customer ids
 df["master_id"].nunique()
 
 ################################
@@ -59,9 +69,9 @@ df["master_id"].nunique()
 # the total number of purchases and spending in both online and offline channels of each customer are defined as new features
 
 df["customer_value_total_ever_omnichannel"] = df["customer_value_total_ever_offline"] + df["customer_value_total_ever_online"]
-
 df["order_num_total_ever_omnichannel"] = df["order_num_total_ever_online"] + df["order_num_total_ever_offline"]
 df.head()
+
 
 #datetime
 # converting date to datetime format
@@ -120,7 +130,7 @@ new_df.info()
 #Step 1: Definition of Recency, Frequency and Monetary
 #Step 2: Calculate the Recency, Frequency and Monetary metrics specific to the customer.
 #Step 3: Assign your calculated metrics to a variable named rfm.
-#Step 4: Rename metrics to recency, frequency and monetary olarak değiştiriniz.
+#Step 4: Rename metrics to recency, frequency and monetary.
 df = new_df.copy()
 df.head()
 
@@ -141,7 +151,13 @@ rfm.info()
 rfm.describe().T
 rfm = rfm.reset_index()
 
-#rfm[rfm["master_id"] == "cc294636-19f0-11eb-8d74-000d3a38a36f"]
+##### CONTROLLING #####
+#df[df["master_id"] == "cc294636-19f0-11eb-8d74-000d3a38a36f"]
+#rfm[rfm.index == "cc294636-19f0-11eb-8d74-000d3a38a36f"]
+
+
+
+
 rfm.columns
 
 
@@ -237,8 +253,8 @@ woman.to_csv("loyal_womans.csv")
 # uykuda olanlar ve yeni gelen müşteriler özel olarak hedef alınmak isteniyor. Uygun profildeki müşterilerin id'lerini csv dosyasına kaydediniz.
 
 # Nearly 40% discount is planned for Men's and Children's products.
-# Customers who were good customers in the past, but have not shopped for a long time and potentially, interested in the categories related to this discount,
-# dormant and newly arriving customers are specifically targeted.
+# Customers who were loyal in the past, but have not shopped for a long time and potentially, interested in the categories related to this discount,
+# dormant and new customers are specifically targeted.
 # Save the ids of the customers in the appropriate profile to the csv file.
 
 rfm["segment"].unique()

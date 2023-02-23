@@ -22,6 +22,24 @@ warnings.filterwarnings('ignore')
 # 1. Exploratory Data Analysis
 ################################################
 def check_df(dataframe, head=5):
+    """
+    Helper function to print out basic data properties such as:
+    dataframe shape (rows, columns)
+    dataframe dtypes | data types of the features
+    top n entries in the dataframe (n specified with the variable head)
+    last n entries in the dataframe (n specified with the variable head)
+    total number of null values in each feature
+    statistical values of numerical features in the dataframe, quantiles are specified as: [0, 0.05, 0.50, 0.95, 0.99, 1]
+
+    Parameters
+    ----------
+    dataframe - dataframe to be invested
+    head - number of entries to be printed out (head and tail)
+
+    Returns
+    -------
+
+    """
     print("##################### Shape #####################")
     print(dataframe.shape)
     print("##################### Types #####################")
@@ -157,11 +175,11 @@ def num_summary(dataframe, numerical_col, plot=False):
         plt.title(numerical_col)
         plt.show(block=True)
 
-# # Kategorik değişkenlerin incelenmesi
+# # Investigating Categorical features
 # for col in cat_cols:
 #     cat_summary(df, col)
 #
-# # Sayısal değişkenlerin incelenmesi
+# # Investigating Numerical features
 # df[num_cols].describe().T
 #
 # # for col in num_cols:
@@ -211,7 +229,7 @@ def high_correlated_cols(dataframe, plot=False, corr_th=0.90):
         plt.show()
     return drop_list
 
-# # Sayısal değişkenkerin birbirleri ile korelasyonu
+# # Correlation between numerical features
 # correlation_matrix(df, num_cols)
 
 # Analyse Target with Categorical & Numerical Features
@@ -219,7 +237,7 @@ def high_correlated_cols(dataframe, plot=False, corr_th=0.90):
 def target_summary_with_num(dataframe, target, numerical_col):
     print(dataframe.groupby(target).agg({numerical_col: "mean"}), end="\n\n\n")
 
-# # Target ile sayısal değişkenlerin incelemesi
+# # Investigating the relationship between Target features - Numerical Features
 # for col in num_cols:
 #     target_summary_with_num(df, "Outcome", col)
 
@@ -290,11 +308,11 @@ def missing_vs_target(dataframe, target, na_columns):
 
 #df["Embarked"].fillna("missing")
 
-# sayısal değişkenleri direk median ile oldurma
+# filling with median values median ile oldurma
 #df.apply(lambda x: x.fillna(x.median()) if x.dtype != "O" else x, axis=0).isnull().sum()
-# kategorik değişkenleri mode ile doldurma
+# fill categorical with mode
 #df.apply(lambda x: x.fillna(x.mode()[0]) if (x.dtype == "O" and len(x.unique()) <= 10) else x, axis=0).isnull().sum()
-# kategorik değişken kırılımında sayısal değişkenleri doldurmak
+# fill categorical values in relation with numerical features
 #df["Age"].fillna(df.groupby("Sex")["Age"].transform("mean")).isnull().sum()
 
 
