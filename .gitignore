@@ -1,3 +1,7 @@
 /data/
-
-
+notebooks/template_notebook.ipynb
+FLO_Customers_Powerbi.pbix
+customtheme.json
+reports/FLO_Customers_Report.pdf
+reports/template_report.md
+src/template_module.py
