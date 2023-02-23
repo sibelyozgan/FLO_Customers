@@ -1,6 +1,6 @@
 # FLO_Customers
 
-(reports/img/FLO_Customers_Report_Page_3.jpg)
+![Flo Infographics](reports/img/FLO_Customers_Report_Page_3.jpg)
 
 
 #### -- Project Status: [Active]
