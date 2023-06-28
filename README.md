@@ -57,6 +57,4 @@ Visualizations are done in Power BI
 
 
 ## Contributing Members
-
- - [Ezgi Bastug](https://github.com/ezgibastug)
  - [Sibel Yasemin Ozgan](https://github.com/sibelyozgan)
